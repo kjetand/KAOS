@@ -30,6 +30,10 @@ static inline int8_t inb(int16_t port)
     return val;
 }
 
+/* Number systems */
+#define BASE_TEN         10
+#define BASE_HEXADECIMAL 16
+
 /* ASCII special character encodings */
 #define ASCII_NUL   0x00
 #define ASCII_SOH   0x01
