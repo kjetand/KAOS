@@ -3,7 +3,8 @@
 
 #include "common.h"
 
-int8_t* bzero(int8_t *dst, int32_t count);
-int8_t* memcpy(int8_t *dst, int8_t *src, int32_t count);
+char* bzero(char* dst, uint32_t count);
+char* memcpy(char* dst, const char* src, uint32_t count);
+int32_t sprintf(char* str, const char* format, ...);
 
 #endif

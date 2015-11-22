@@ -1,5 +1,6 @@
 #include "common.h"
 #include "screen.h"
+#include "string.h"
 
 void kernel_main()
 {

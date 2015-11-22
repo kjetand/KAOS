@@ -1,9 +1,9 @@
 #include "common.h"
 #include "string.h"
 
-int8_t* bzero(int8_t *dst, int32_t count)
+char* bzero(char* dst, uint32_t count)
 {
-    int32_t i;
+    uint32_t i;
 
     for (i = 0; i < count; i++)
     {
@@ -12,13 +12,32 @@ int8_t* bzero(int8_t *dst, int32_t count)
     return dst;
 }
 
-int8_t* memcpy(int8_t *dst, int8_t *src, int32_t count)
+char* memcpy(char* dst, const char* src, uint32_t count)
 {
-    int32_t i;
+    uint32_t i;
 
     for (i = 0; i < count; i++)
     {
         dst[i] = src[i];
     }
     return dst;
+}
+
+int32_t sprintf(char* str, const char* format, ...)
+{
+    int32_t i = 0;
+    char c = format[i];
+
+    for (i = 1; c != ASCII_NUL; i++)
+    {
+        if (c == '%')
+        {
+        }
+        else
+        {
+            str[i-1] = c;
+        }
+        c = format[i];
+    }
+    return 0;
 }

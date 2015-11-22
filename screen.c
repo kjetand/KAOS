@@ -2,13 +2,13 @@
 #include "screen.h"
 #include "string.h"
 
-static void update_cursor(screen_t *screen);
-static int8_t translate_x(screen_t *screen, int8_t x);
-static int8_t translate_y(screen_t *screen, int8_t y);
-static int8_t get_color(screen_t *screen);
-static int16_t get_video_memory_index(int8_t x, int8_t y);
+static void update_cursor(screen_t* screen);
+static uint8_t translate_x(screen_t* screen, uint8_t x);
+static uint8_t translate_y(screen_t* screen, uint8_t y);
+static int8_t get_color(screen_t* screen);
+static uint16_t get_video_memory_index(uint8_t x, uint8_t y);
 
-void screen_init(screen_t *screen)
+void screen_init(screen_t* screen)
 {
     screen_set_position(screen, 0, 0);
     screen_set_dimensions(screen, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -17,44 +17,44 @@ void screen_init(screen_t *screen)
     screen_set_background(screen, COLOR_BLACK);
 }
 
-void screen_set_position(screen_t *screen, int8_t x, int8_t y)
+void screen_set_position(screen_t* screen, uint8_t x, uint8_t y)
 {
     screen->x = x;
     screen->y = y;
 }
 
-void screen_set_dimensions(screen_t *screen, int8_t width, int8_t height)
+void screen_set_dimensions(screen_t* screen, uint8_t width, uint8_t height)
 {
     screen->width = width;
     screen->height = height;
 }
 
-void screen_set_background(screen_t *screen, vga_color_t color)
+void screen_set_background(screen_t* screen, vga_color_t color)
 {
     screen->background = color;
 }
 
-void screen_set_foreground(screen_t *screen, vga_color_t color)
+void screen_set_foreground(screen_t* screen, vga_color_t color)
 {
     screen->foreground = color;
 }
 
-void screen_set_cursor(screen_t *screen, int8_t x, int8_t y)
+void screen_set_cursor(screen_t *screen, uint8_t x, uint8_t y)
 {
     screen->cursor_x = x;
     screen->cursor_y = y;
     update_cursor(screen);
 }
 
-void screen_clear_line(screen_t *screen, int8_t line_number)
+void screen_clear_line(screen_t* screen, uint8_t line_number)
 {
-    int8_t *vidmem = VIDEO_MEMORY_ADDR;
-    int8_t  actual_y = translate_y(screen, line_number);
+    char*   vidmem = VIDEO_MEMORY_ADDR;
+    uint8_t actual_y = translate_y(screen, line_number);
     
-    int16_t start = get_video_memory_index(screen->x, actual_y);
-    int16_t end = start + (screen->width - 1) * 2;
+    uint16_t start = get_video_memory_index(screen->x, actual_y);
+    uint16_t end = start + (screen->width - 1) * 2;
 
-    int16_t i;
+    uint16_t i;
 
     for (i = start; i <= end; i += 2)
     {
@@ -63,9 +63,9 @@ void screen_clear_line(screen_t *screen, int8_t line_number)
     }
 }
 
-void screen_clear(screen_t *screen)
+void screen_clear(screen_t* screen)
 {
-    int8_t i;
+    uint8_t i;
 
     for (i = 0; i < screen->height; i++)
     {
@@ -74,11 +74,11 @@ void screen_clear(screen_t *screen)
     screen_set_cursor(screen, 0, 0);
 }
 
-void screen_scroll(screen_t *screen)
+void screen_scroll(screen_t* screen)
 {
-    int8_t *vidmem = VIDEO_MEMORY_ADDR;
-    int8_t  prev_y, curr_y, row;
-    int16_t prev_pos, curr_pos;
+    char*    vidmem = VIDEO_MEMORY_ADDR;
+    uint8_t  prev_y, curr_y, row;
+    uint16_t prev_pos, curr_pos;
 
     for (row = 1; row < screen->height; row++)
     {
@@ -92,12 +92,12 @@ void screen_scroll(screen_t *screen)
     screen_clear_line(screen, screen->height - 1);
 }
 
-void screen_putchar(screen_t *screen, char c)
+void screen_putchar(screen_t* screen, char c)
 {
-    int8_t *vidmem = VIDEO_MEMORY_ADDR;
-    int8_t  x = translate_x(screen, screen->cursor_x);
-    int8_t  y = translate_y(screen, screen->cursor_y);
-    int16_t pos = get_video_memory_index(x, y);
+    char*    vidmem = VIDEO_MEMORY_ADDR;
+    uint8_t  x = translate_x(screen, screen->cursor_x);
+    uint8_t  y = translate_y(screen, screen->cursor_y);
+    uint16_t pos = get_video_memory_index(x, y);
 
     switch (c)
     {
@@ -127,7 +127,7 @@ void screen_putchar(screen_t *screen, char c)
     screen_set_cursor(screen, screen->cursor_x, screen->cursor_y);
 }
 
-void screen_putstr(screen_t *screen, char* str)
+void screen_putstr(screen_t* screen, char* str)
 {
     char *currentChar = str;
 
@@ -142,10 +142,10 @@ void screen_putstr(screen_t *screen, char* str)
 // Helper functions
 ///////////////////////////////////////////////////////////////////////////////
 
-static void update_cursor(screen_t *screen)
+static void update_cursor(screen_t* screen)
 {
-    int8_t  x = translate_x(screen, screen->cursor_x);
-    int8_t  y = translate_y(screen, screen->cursor_y);
+    uint8_t  x = translate_x(screen, screen->cursor_x);
+    uint8_t  y = translate_y(screen, screen->cursor_y);
     int16_t pos = x + (y * SCREEN_WIDTH);
 
     outb(VGA_CRT_INDEX, VGA_CRT_CURSOR_LOW);
@@ -154,24 +154,24 @@ static void update_cursor(screen_t *screen)
     outb(VGA_CRT_DATA, (pos >> 8) & 0xFF);
 }
 
-static int8_t translate_x(screen_t *screen, int8_t x)
+static uint8_t translate_x(screen_t* screen, uint8_t x)
 {
     return screen->x + x;
 }
 
-static int8_t translate_y(screen_t *screen, int8_t y)
+static uint8_t translate_y(screen_t* screen, uint8_t y)
 {
     return screen->y + y;
 }
 
-static int8_t get_color(screen_t *screen)
+static int8_t get_color(screen_t* screen)
 {
     int8_t foreground = (int8_t) screen->foreground;
     int8_t background = (int8_t) screen->background;
     return (foreground & 0x0F) | (background << 4);
 }
 
-static int16_t get_video_memory_index(int8_t x, int8_t y)
+static uint16_t get_video_memory_index(uint8_t x, uint8_t y)
 {
     return 2 * ((y * SCREEN_WIDTH) + x);
 }

@@ -3,13 +3,13 @@
 
 #include "common.h"
 
-#define VIDEO_MEMORY_ADDR ((int8_t *) 0xB8000)
+#define VIDEO_MEMORY_ADDR ((char*) 0xB8000)
 
 /* VGA data register ports */
-#define VGA_CRT_DATA 0x3D5 // CRT Controller VGA data register
+#define VGA_CRT_DATA 0x3D5
 
 /* VGA index register ports */
-#define VGA_CRT_INDEX 0x3D4 // CRT Controller VGA index register
+#define VGA_CRT_INDEX 0x3D4
 
 /* VGA CRT controller registers */
 #define VGA_CRT_CURSOR_HIGH 0x0E
@@ -51,15 +51,15 @@ typedef struct
 } screen_t;
 
 void screen_init(screen_t *screen);
-void screen_set_position(screen_t* screen, int8_t x, int8_t y);
-void screen_set_dimensions(screen_t *screen, int8_t width, int8_t height);
-void screen_set_background(screen_t *screen, vga_color_t color);
-void screen_set_foreground(screen_t *screen, vga_color_t color);
-void screen_set_cursor(screen_t *screen, int8_t x, int8_t y);
-void screen_clear_line(screen_t *screen, int8_t line_number);
-void screen_clear(screen_t *screen);
-void screen_scroll(screen_t *screen);
-void screen_putchar(screen_t *screen, char c);
-void screen_putstr(screen_t *screen, char* str);
+void screen_set_position(screen_t* screen, uint8_t x, uint8_t y);
+void screen_set_dimensions(screen_t* screen, uint8_t width, uint8_t height);
+void screen_set_background(screen_t* screen, vga_color_t color);
+void screen_set_foreground(screen_t* screen, vga_color_t color);
+void screen_set_cursor(screen_t* screen, uint8_t x, uint8_t y);
+void screen_clear_line(screen_t* screen, uint8_t line_number);
+void screen_clear(screen_t* screen);
+void screen_scroll(screen_t* screen);
+void screen_putchar(screen_t* screen, char c);
+void screen_putstr(screen_t* screen, char* str);
 
 #endif
