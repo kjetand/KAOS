@@ -1,0 +1,3 @@
+display_library: sdl
+floppya: 1_44=KAOS.bin, status=inserted
+boot: a
